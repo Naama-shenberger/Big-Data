@@ -1,0 +1,52 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+
+```{r}
+#import libraries
+install.packages("dplyr")
+install.packages("tidyr")
+install.packages("matrixcalc")
+install.packages("zoo")
+library(dplyr)
+library(tidyr)
+library(matrixcalc)
+library(zoo)
+```
+Power consumption in USA:
+
+The exercise deals with data from power stations in the United States on several contracts.
+
+info cell: Reading the table Data
+
+```{r}
+#Reading Data
+A <- read.delim("table.tsv")
+A$DateTime <- as.POSIXct( A$megawatthours, tz = "EST", "%H:%M EST %m/%d/%Y" )
+```
+Data clearing:
+
+1.Remove duplicate rows in the data frame
+
+2.Complete missing values according to Last Observation in data frame
+
+```{r}
+A<-distinct(A) #1
+na.locf(na.locf(A),fromLast=TRUE) #2
+```
+
+
+```{r}
+#![Here is a Crab](Crab.png)
+```
+
+
+```{r}
+```
+
+
+```{r}
+```
+
