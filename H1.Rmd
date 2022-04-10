@@ -53,7 +53,7 @@ Slicing:
 Performing Slicing on Data cube, from all days to 07-14 Feb only.
 
 ```{r}
-index<-which(as.Date(A[,'DateTime'], tz = "EST", "%Y%m%d")>as.character.POSIXt("2021-02-06") & as.Date(A[,'DateTime'], tz = "EST","%m%d%Y")<as.character.POSIXt("2021-02-15") )
+index<-which(data_cube[,'Date']>"20210206" & data_cube[,'Date']<"20210215" )
 Silce_cube<-data_cube[index,]
 ```
 Roll up:
