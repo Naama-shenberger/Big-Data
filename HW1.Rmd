@@ -55,7 +55,7 @@ Slicing:
 Performing Slicing on Data cube, from all days to 07-14 Feb only.
 
 ```{r}
-index<-which(A[,'DateTime']>as.character.POSIXt("2021-02-06") & A[,'DateTime']<as.character.POSIXt("2021-02-15") )
+index<-which(as.Date(A[,'DateTime'], tz = "EST", "%Y%m%d")>as.character.POSIXt("2021-02-06") & as.Date(A[,'DateTime'], tz = "EST","%m%d%Y")<as.character.POSIXt("2021-02-15") )
 Silce_cube<-data_cube[index,]
 ```
 Roll up:
@@ -80,7 +80,7 @@ A graph that shows the daily average of the Net generation in the US
 data_frame<-tibble(data_mean)
 days<- as.integer(substr(names(roll_up[,1]), nchar(names(roll_up[,1])) - 2 + 1, nchar(names(roll_up[,1]))) )
 # create an empty plot
-plot(1, type="n", xlab="", ylab="", xlim = c(days[1],days[10]), ylim=c(1505748 ,1900000 ))
+plot(1, type="n", xlab="", ylab="", xlim = c(days[1],days[8]), ylim=c(1505748 ,1900000 ))
 # rearrange in a new, temporary dataframe
 DF <- data.frame ( Time = days, Demand = data_frame)
 # plot
