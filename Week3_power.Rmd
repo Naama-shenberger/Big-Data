@@ -122,7 +122,7 @@ Grouping the Data cube by time groups
 ```{r}
 temp_2_1<-data_cube_2_1[index_2_1,]
 rownames(temp_2_1) <- c(temp_2_1[,"Time"])
-temp_2<-temp_2_1[,colnames(temp_2_1)!="Time"]
+temp_2_1<-temp_2_1[,colnames(temp_2_1)!="Time"]
 roll_up_2_1 <-  rowsum(temp_2_1,row.names(temp_2_1))
 ```
 
