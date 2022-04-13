@@ -52,6 +52,21 @@ data_cube<- with(A,cbind(BPAT=Net.generation,CISO	=Net.generation.1, CPLE=Net.ge
 adjusting data cube  to time zones:
 
 That the times of the data are in the timezon of EST and stations: BPAT, CISO, PACW are in PDT time which is 3 hours back from EST and stations: ERCO, MISO are in CDT time which is one hour back from EST, the other stations are in EDT which is equal to EST.
+BPAT, CISO, PACW are in columns 1,2,9
+ 3 hours back=>
+ row range is 4:n
+ data_cube[4:n, col_number]
+ERCO, MISO are in columns 4,7
+ 1 hour back=>
+ row range is 2:(n-2)
+ data_cube[2:(n-2), col_number]
+
+EST and stations dont need the time zone to change
+ row range is 1:(n-3)
+ data_cube[1:(n-3), col_number]
+ 
+datacube_timezon has n-3 rows
+
 ```{r}
 n<-dim(data_cube)[1]#The number of rows in the data frame is
 datacube_timezon<-cbind(data_cube[4:n,c(1,2)],data_cube[1:(n-3),3],data_cube[2:(n-2),4],data_cube[1:(n-3),c(5,6)],data_cube[2:(n-2),7],data_cube[1:(n-3),8],data_cube[4:n,9],data_cube[1:(n-3),c(10,11,12)] )
