@@ -37,6 +37,7 @@ Data clearing:
 ```{r}
 A<-distinct(A) #1
 na.locf(na.locf(A),fromLast=TRUE) #2
+
 ```
 Cube construction:
 
@@ -148,7 +149,7 @@ for ( i in demands ) {
    #abline(a, b, col = i, lw =2)
 }
 
-
+legend( 'bottomleft', col = demands, pch = 19,legend = names(Demand_norm) )
 
 ```
 
