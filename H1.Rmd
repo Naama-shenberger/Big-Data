@@ -148,7 +148,9 @@ for ( i in demands ) {
    #b <- coef(LM[[ i ]])[2]
    #abline(a, b, col = i, lw =2)
 }
-
+title(main = "Minute power demand in the east coast",
+      xlab = "Time (10:00-18:00)", ylab = "demand",
+      cex.main = 2,   font.main = 1, col.main = "black")
 legend( 'bottomleft', col = demands, pch = 19,legend = names(Demand_norm) )
 
 ```
