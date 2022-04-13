@@ -100,7 +100,7 @@ Question 2:
 Note: The variables with a lower hyphen 2_1 refer to question 2 graph number 1, because we created 2 graphs in question 2.
 
 ```{r}
-# The dimensions of the cube are the Power stations and the dimension of date time.
+# The dimensions of the cube are the Demand Power of the stations and the dimension of date time.
 data_cube_2_1<- with(A,cbind( CPLE=Demand.2, FPL=Demand.4,ISNE= Demand.5,
                          NYIS =Demand.7 , PJM=Demand.9 ,Time=as.integer(format(A[,'DateTime'], format = "%H"))))
 
