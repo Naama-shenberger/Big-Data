@@ -46,6 +46,15 @@ The measurable variable is Net generation
 # The dimensions of the cube are the Power stations and the dimension of date time.
 data_cube<- with(A,cbind(BPAT=Net.generation,CISO	=Net.generation.1, CPLE=Net.generation.2,ERCO= Net.generation.3, FPL=Net.generation.4,ISNE= Net.generation.5,MISO= Net.generation.6,
                          NYIS =Net.generation.7 , PACW=Net.generation.8 , PJM=Net.generation.9 ,United_States_Lower = Net.generation.10,Date=as.integer(format(as.Date(A[,'DateTime']), "%Y%m%d"))))
+
+```
+
+adjusting data cube  to time zones:
+
+That the times of the data are in the timezon of EST and stations: BPAT, CISO, PACW are in PDT time which is 3 hours back from EST and stations: ERCO, MISO are in CDT time which is one hour back from EST, the other stations are in EDT which is equal to EST.
+```{r}
+n<-dim(data_cube)[1]#The number of rows in the data frame is
+datacube_timezon<-cbind(data_cube[4:n,c(1,2)],data_cube[1:(n-3),3],data_cube[2:(n-2),4],data_cube[1:(n-3),c(5,6)],data_cube[2:(n-2),7],data_cube[1:(n-3),8],data_cube[4:n,9],data_cube[1:(n-3),c(10,11,12)] )
 ```
 Slicing:
 
@@ -53,7 +62,7 @@ Performing Slicing on Data cube, from all days to 07-14 Feb only.
 
 ```{r}
 index<-which(data_cube[,'Date']>"20210206" & data_cube[,'Date']<"20210215" )
-Silce_cube<-data_cube[index,]
+Silce_cube<-datacube_timezon[index,]
 ```
 Roll up:
 
