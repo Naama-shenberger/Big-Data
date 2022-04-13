@@ -90,3 +90,69 @@ title(main = "Mean daily power generation in the US",
       cex.main = 2,   font.main = 2, col.main = "darkorchid1")
 ```
 
+
+```{r}
+# The dimensions of the cube are the Power stations and the dimension of date time.
+data_cube_q2<- with(A,cbind( CPLE=Net.generation.2, FPL=Net.generation.4,ISNE= Net.generation.5,
+                         NYIS =Net.generation.7 , PJM=Net.generation.9 ,Time=as.integer(format(A[,'DateTime'], format = "%H"))))
+data_cube_q2<-na.locf(data_cube_q2,fromLast=TRUE)
+index_2<-which(data_cube_q2[,'Time']>9 & data_cube_q2[,'Time']<19 )
+Silce_cube_2<-data_cube_q2[index_2,]
+
+
+```
+
+
+```{r}
+temp_2<-data_cube_q2[index_2,]
+rownames(temp_2) <- c(temp_2[,"Time"])
+temp_2<-temp_2[,colnames(temp_2)!="Time"]
+roll_up_2 <-  rowsum(temp_2,row.names(temp_2))
+
+
+```
+
+
+```{r}
+# linear fit
+LM <- list(  CPLE = NA,  FPL = NA,  ISNE = NA,  NYIS = NA, PJM = NA)
+Lm_data<-data.frame (roll_up_2)
+min_max_norm <- function(x) {
+    (x - min(x)) / (max(x) - min(x))
+}
+
+
+
+mat1_data <- c(rep(c(1),9),c(10:18))
+mat1 <- matrix(mat1_data,nrow=2,ncol=9,byrow=TRUE)
+Demand_norm <- as.data.frame(lapply(Lm_data, min_max_norm))
+
+
+
+"%^%" <- function(mat, power) 
+  with(eigen(mat), vectors %*% (values^power * t(vectors))) 
+
+# create an empty plot
+plot(1, type="n", xlab="", ylab="", xlim = c(10,18), ylim=c(0 ,1))
+demands <- seq(5)
+for ( i in demands ) {
+   # rearrange in a new, temporary dataframe
+   DF <- data.frame ( Time =c(10:18), Demand = Demand_norm[,i] )
+   # plot
+   lines( DF, col = i, type = 'b' )
+   # linear fit
+   LM[ i ] <- ((t(mat1)%*% mat1)%^% (-1)) %*%(t(mat1))*(DF[2])
+   #LM[[ i ]] <- lm( Demand ~ Time, data = DF)
+   #a <- LM[[ i ]][1]
+   #b <- coef(LM[[ i ]])[2]
+   #abline(a, b, col = i, lw =2)
+}
+
+
+
+```
+
+
+```{r}
+```
+
