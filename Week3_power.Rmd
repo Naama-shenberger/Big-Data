@@ -2,8 +2,9 @@
 title: "H1"
 output: html_document
 date: '2022-04-10'
+Naama Shenberger ID:211983747
+Ella Hanzin ID:212028971
 ---
-
 ```{r include=FALSE}
 #import libraries
 install.packages("dplyr")
@@ -21,13 +22,13 @@ Power consumption in USA:
 The exercise deals with data from power stations in the United States on several contracts.
 
 info cell: Reading the table Data
-
 ```{r}
 #Reading Data
 A <- read.delim("table.tsv")
 A$DateTime <- as.POSIXct( A$megawatthours, tz = "EST", "%H:%M EST %m/%d/%Y" )
 
 ```
+
 Data clearing:
 
 Remove duplicate rows in the data frame
@@ -35,6 +36,7 @@ Remove duplicate rows in the data frame
 ```{r}
 A<-distinct(A)
 ```
+
 Question 1:
 
 Cube construction:
@@ -42,6 +44,7 @@ Cube construction:
 The cube is bulid from dimension of time by days and the dimension of stations.
 
 The measurable variable is Net generation
+
 ```{r}
 # The dimensions of the cube are the Power stations and the dimension of date time.
 data_cube<- with(A,cbind(BPAT=Net.generation,CISO	=Net.generation.1, CPLE=Net.generation.2,ERCO= Net.generation.3, FPL=Net.generation.4,ISNE= Net.generation.5,MISO= Net.generation.6,
@@ -71,6 +74,7 @@ datacube_timezon has n-3 rows
 n<-dim(data_cube)[1]#The number of rows in the data frame is
 datacube_timezon<-cbind(data_cube[4:n,c(1,2)],data_cube[1:(n-3),3],data_cube[2:(n-2),4],data_cube[1:(n-3),c(5,6)],data_cube[2:(n-2),7],data_cube[1:(n-3),8],data_cube[4:n,9],data_cube[1:(n-3),c(10,11,12)] )
 ```
+
 Slicing:
 
 Performing Slicing on Data cube, from all days to 07-14 Feb only.
@@ -82,7 +86,6 @@ Silce_cube<-datacube_timezon[index,]
 Roll up:
 
 Performing roll up - from a days and hours to days only.
-
 ```{r}
 temp<-data_cube[index,]
 rownames(temp) <- c(temp[,"Date"])
@@ -90,6 +93,7 @@ temp<-temp[,colnames(temp)!="Date"]
 roll_up <-  rowsum(temp,row.names(temp))
 data_mean<-rowMeans(roll_up[,1:11]) #Daily average performance
 ```
+
 Plot:
 
 Axis x - days
@@ -131,6 +135,7 @@ data_cube_2_1<- with(A,cbind( CPLE=Demand.2, FPL=Demand.4,ISNE= Demand.5,
 # Complete missing values according to Last Observation in data cube
 data_cube_2_1<-na.locf(data_cube_2_1,fromLast=TRUE)
 ```
+
 Slicing:
 
 Performing Slicing on Data cube, from all Times in the day to 10:00-18:00.
@@ -140,9 +145,11 @@ Performing Slicing on Data cube, from all Times in the day to 10:00-18:00.
 index_2_1<-which(data_cube_2_1[,'Time']>9 & data_cube_2_1[,'Time']<19 )
 Silce_cube_2_1<-data_cube_2_1[index_2_1,]
 ```
+
 Grouping:
 
 Grouping the Data cube by time groups
+
 ```{r}
 temp_2_1<-data_cube_2_1[index_2_1,]
 rownames(temp_2_1) <- c(temp_2_1[,"Time"])
@@ -152,6 +159,7 @@ roll_up_2_1 <-  rowsum(temp_2_1,row.names(temp_2_1))
 
 Perform a linear regression to get the power requirement in minutes.
 We calculated the average regression lines of five stations on the east coast.
+
 ```{r}
 # linear fit
 LM <- list(  CPLE = NA,  FPL = NA,  ISNE = NA,  NYIS = NA, PJM = NA)
@@ -209,13 +217,16 @@ legend( 'bottomleft', col = colors, pch = 19,legend = names(Demand_norm_2_1) )
 
 dev.off()
 ```
+
 Slicing:
 
 Performing Slicing on Data cube, from all Times in the day to 20:00 to 3:00 o'clock.
+
 ```{r}
 index_2_2<-which(data_cube_2_1[,'Time']>19 | data_cube_2_1[,'Time']<4 )
 Silce_cube_2_2<-data_cube_2_1[index_2_2,]
 ```
+
 Grouping:
 
 Grouping the Data cube by time groups
@@ -281,6 +292,7 @@ legend( 'bottomleft', col = colors, pch = 19,legend = names(order_data) )
 
 dev.off()
 ```
+
 Graph conclusions:
 
 plot Week3_Mean_daily_power 
@@ -295,8 +307,6 @@ You can see that all five station lines go up towards evening hours (16:00-18:00
 plot Week3_Minute_power_demand_2 
 
 You can see that in the late evening (20:00-22:00) there is a high electricity demand and as you get to late at night (before dawn) the electricity demand decreases because during these hours people sleep so there is no demand for electricity.
-
-
 
 
 
