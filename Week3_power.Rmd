@@ -101,8 +101,8 @@ Note: The variables with a lower hyphen 2_1 refer to question 2 graph number 1, 
 
 ```{r}
 # The dimensions of the cube are the Power stations and the dimension of date time.
-data_cube_2_1<- with(A,cbind( CPLE=Net.generation.2, FPL=Net.generation.4,ISNE= Net.generation.5,
-                         NYIS =Net.generation.7 , PJM=Net.generation.9 ,Time=as.integer(format(A[,'DateTime'], format = "%H"))))
+data_cube_2_1<- with(A,cbind( CPLE=Demand.2, FPL=Demand.4,ISNE= Demand.5,
+                         NYIS =Demand.7 , PJM=Demand.9 ,Time=as.integer(format(A[,'DateTime'], format = "%H"))))
 
 # Complete missing values according to Last Observation in data cube
 data_cube_2_1<-na.locf(data_cube_2_1,fromLast=TRUE)
