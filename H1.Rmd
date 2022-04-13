@@ -134,28 +134,94 @@ Demand_norm <- as.data.frame(lapply(Lm_data, min_max_norm))
   with(eigen(mat), vectors %*% (values^power * t(vectors))) 
 
 # create an empty plot
-plot(1, type="n", xlab="", ylab="", xlim = c(10,18), ylim=c(0 ,1))
+plot(1, type="n", xlab="", ylab="",xaxt="n",xlim = c(10,18), ylim=c(0 ,1))
+axis(1, at=c(10:18),labels=c("10:00","11:00","12:00","13:00","14:00","15:00","16:00","17:00","18:00"))
 demands <- seq(5)
+a<-0
+b<-0
 for ( i in demands ) {
    # rearrange in a new, temporary dataframe
    DF <- data.frame ( Time =c(10:18), Demand = Demand_norm[,i] )
    # plot
    lines( DF, col = i, type = 'b' )
    # linear fit
-   LM[ i ] <- ((t(mat1)%*% mat1)%^% (-1)) %*%(t(mat1))*(DF[2])
-   #LM[[ i ]] <- lm( Demand ~ Time, data = DF)
-   #a <- LM[[ i ]][1]
-   #b <- coef(LM[[ i ]])[2]
+   X_T_X<-((mat1)%*% t(mat1))
+   Vector_df1<-c(t(DF[2]))
+   X_T_y<-((mat1))%*% (Vector_df1)
+   LM[[ i ]] <-(X_T_X%^% (-1))%*% X_T_y
+   a <- a+(LM[[ i ]])[1]
+   b <- b+(LM[[ i ]])[2]
    #abline(a, b, col = i, lw =2)
 }
+
+abline(a/5, b/5, col = i, lw =2)
 title(main = "Minute power demand in the east coast",
-      xlab = "Time (10:00-18:00)", ylab = "demand",
+      xlab = "Time", ylab = "demand",
       cex.main = 2,   font.main = 1, col.main = "black")
 legend( 'bottomleft', col = demands, pch = 19,legend = names(Demand_norm) )
-
 ```
 
 
 ```{r}
+index_3<-which(data_cube_q2[,'Time']>19 | data_cube_q2[,'Time']<4 )
+Silce_cube_3<-data_cube_q2[index_3,]
+```
+
+
+```{r}
+temp_3<-data_cube_q2[index_3,]
+rownames(temp_3) <- c(temp_3[,"Time"])
+temp_3<-temp_3[,colnames(temp_3)!="Time"]
+roll_up_3 <-  rowsum(temp_3,row.names(temp_3))
+```
+
+
+```{r}
+
+# linear fit
+LM <- list(  CPLE = NA,  FPL = NA,  ISNE = NA,  NYIS = NA, PJM = NA)
+Lm_data_3<-data.frame (roll_up_3)
+min_max_norm <- function(x) {
+    (x - min(x)) / (max(x) - min(x))
+}
+
+
+
+mat2_data <- c(rep(c(1),8),c(1:8))
+mat2 <- matrix(mat2_data,nrow=2,ncol=8,byrow=TRUE)
+Demand_norm_2 <- as.data.frame(lapply(Lm_data_3, min_max_norm))
+
+dd<-Demand_norm_2[c(4,5,6,7,1,2,3,8),]
+
+"%^%" <- function(mat, power) 
+  with(eigen(mat), vectors %*% (values^power * t(vectors))) 
+
+
+# create an empty plot
+plot(1, type="n", xlab="", ylab="",xaxt="n", xlim = c(1,8), ylim=c(0 ,1))
+axis(1, at=c(1:8),labels=c("20:00","21:00","22:00","23:00","00:00","01:00","02:00","03:00"))
+demands <-seq(5)# c(4,5,6,7,1,2,3,8)
+a<-0
+b<-0
+
+for ( i in demands ) {
+   # rearrange in a new, temporary dataframe
+   DF <- data.frame ( Time =c(1,8), Demand = dd[,i] )
+   # plot
+   lines( DF[2], col = i, type = 'b' )
+   # linear fit
+   X_T_X<-((mat2)%*% t(mat2))
+   Vector_df1<-c(t(DF[2]))
+   X_T_y<-((mat2))%*% (Vector_df1)
+   LM[[ i ]] <-(X_T_X%^% (-1))%*% X_T_y
+   a <- a+(LM[[ i ]])[1]
+   b <- b+(LM[[ i ]])[2]
+   #abline(a, b, col = i, lw =2)
+}
+abline(a/5, b/5, col = 'gray7', lw =2)
+title(main = "Minute power demand in the east coast",
+      xlab = "Time", ylab = "demand",
+      cex.main = 2,   font.main = 1, col.main = "black")
+#legend( 'bottomleft', col = demands, pch = 19,legend = names(Demand_norm) )
 ```
 
