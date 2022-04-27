@@ -113,7 +113,7 @@ pdf(file = "Week3_Mean_daily_power.pdf",
 
 
 # create an empty plot
-plot(1, type="n", xlab="", ylab="", xlim = c(days[1],days[8]), ylim=c(1505748 ,1900000 ))
+plot(1, type="n", xlab="", ylab="", xlim = c(days[1],days[8]), ylim=c(1600000 ,1900000 ))
 # rearrange in a new, temporary dataframe
 DF <- data.frame ( Time = days, Demand = data_frame)
 # plot
@@ -145,6 +145,7 @@ Performing Slicing on Data cube, from all Times in the day to 10:00-18:00.
 index_2_1<-which(data_cube_2_1[,'Time']>9 & data_cube_2_1[,'Time']<19 )
 Silce_cube_2_1<-data_cube_2_1[index_2_1,]
 ```
+
 
 Grouping:
 
