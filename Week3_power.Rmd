@@ -107,7 +107,7 @@ A graph that shows the daily average of the Net generation in the US
 data_frame<-tibble(data_mean)
 days<- as.integer(substr(names(roll_up[,1]), nchar(names(roll_up[,1])) - 2 + 1, nchar(names(roll_up[,1]))) )
 
-pdf(file = "Week3_Mean_daily_power.pdf",   
+pdf(file = "outputHW1/Week3_Mean_daily_power.pdf",   
     width = 8, # The width of the plot in inches
     height = 5) # The height of the plot in inches
 
@@ -183,7 +183,7 @@ mat2_1 <- matrix(mat2_1_data,nrow=2,ncol=9,byrow=TRUE)
 "%^%" <- function(mat, power) 
   with(eigen(mat), vectors %*% (values^power * t(vectors))) 
 
-pdf(file = "Week3_Minute_power_demand_1.pdf",   
+pdf(file = "outputHW1/Week3_Minute_power_demand_1.pdf",   
     width = 8, # The width of the plot in inches
     height = 5) # The height of the plot in inches
 # create an empty plot
@@ -258,7 +258,7 @@ mat2_2 <- matrix(mat2_2_data,nrow=2,ncol=8,byrow=TRUE)
 order_data<-Demand_norm_2_2[c(4,5,6,7,1,2,3,8),]
 
 
-pdf(file = "Week3_Minute_power_demand_2.pdf",   
+pdf(file = "outputHW1/Week3_Minute_power_demand_2.pdf",   
     width = 8, # The width of the plot in inches
     height = 5) # The height of the plot in inches
 
