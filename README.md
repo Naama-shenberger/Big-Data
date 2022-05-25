@@ -1,5 +1,6 @@
 # Big-Data
 Big Data Exercise 1:
+
 Graph conclusions:
 
 plot Week3_Mean_daily_power 
