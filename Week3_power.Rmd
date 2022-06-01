@@ -209,7 +209,7 @@ for ( i in demands ) {
    a <- a+(LM[[ i ]])[1]
    b <- b+(LM[[ i ]])[2]
 }
-
+#demand=a+b*time
 abline(a/5, b/5, col = "black", lw =2) #calculated the average regression lines of five stations on the east coast.
 title(main = "Minute power demand in the east coast",
       xlab = "Time", ylab = "demand",
